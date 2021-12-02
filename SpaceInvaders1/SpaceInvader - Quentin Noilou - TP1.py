@@ -1,14 +1,16 @@
 # Modules
 from typing import Dict, List
 from random import randint
-
 # Fonctions
 
 
 def affichageInfos(infos: Dict[str, int]) -> None:
-    """
-    Procédure prenant en paramètre un dictionnaire et affiche
+    """ Procédure prenant en paramètre un dictionnaire et affiche
     de maniere textuelle ses informations
+    
+
+    Args:
+        infos (Dict[str, int]): dictionnaire contenant les informations du plateau de jeu
     """
     print(f'largeur : {infos["L"]} cases,',
           f'hauteur : {infos["H"]} lignes,',
@@ -20,8 +22,12 @@ def affichageInfos(infos: Dict[str, int]) -> None:
 def affichagePlateauJeu(infos: Dict[str, int],
                         aliens: List[Dict[str, int]],
                         vaisseau: Dict[str, int]) -> None:
-    """
-    Procédure affichant le tableau des scores
+    """Procédure affichant le plateau de jeu
+
+    Args:
+        infos (Dict[str, int]): dictionnaire contenant les informations du plateau de jeu
+        aliens (List[Dict[str, int]]): liste de dictionnaires contenant les informations de chaque alien
+        vaisseau (Dict[str, int]): dictionnaire contenant les informations du vaisseau
     """
     # ligne de séparation de début
     print("=" * 50)
@@ -31,9 +37,7 @@ def affichagePlateauJeu(infos: Dict[str, int],
           + " " * 4 + "VIE"
           + " " * 4 + "NIVEAU"
           )
-    print(" " * 8 + str(infos["score"])
-          + " " * 6 + str(infos["vie"])
-          + " " * 9 + str(infos["level"])
+    print(f'    {infos["score"]:5}  {infos["vie"]:5}    {infos["level"]:5}'
           )
     # ligne de séparation de fin
     print("=" * 50)
@@ -41,39 +45,36 @@ def affichagePlateauJeu(infos: Dict[str, int],
     # création de la matrice de tableau pour le plateau de jeu
     # (matrice infos["L"] par infos["H"])
     # \033[0;37;40m = coloration du tableau en gris foncé
-    tableau: List[List[str]] = [
-        ["\033[0;37;40m " for j in range(plateau_jeu["L"])]
-        for i in range(plateau_jeu["H"])
-    ]
 
-    # affichage des aliens dans la matrice "tableau" [y][x]
-    for i in aliens:
-        # plateau_jeu["L"]//2 - 5 sert à centrer les aliens sans changer la valeur de départ
-        # (éviter les conflits lors du retour au début du tableau au changement de ligne)
-        # \033[1;32;47m = coloration des aliens en vert sur fond blanc
-        tableau[i["posy"]][i["posx"] +
-                           plateau_jeu["L"] // 2 - 5] = "\033[1;32;47m @"
-
-    # affichage du vaisseau dans le tableau
-    # \033[1;31;40m = coloration du vaisseau en rouge
-    tableau[-1][vaisseau["posx"]] = "\033[1;31;40m #"
-    # affichage du tableau
-    for ligne in tableau:
-        for caractere in ligne:
-            print(caractere, end="")
+    for y in range(infos["H"]) :
+        for x in range(infos["L"]) :
+            for alien in aliens :
+                if alien["posx"] == x and alien["posy"] == y :
+                    print("\033[1;32;40m @", end="")
+            if vaisseau["posx"] == x and y == infos["H"]-1 :
+                print("\033[1;31;40m#", end="")
+            else :
+                print("\033[0;37;40m", end="")
         print("")
-
+    
+    
     # ligne de séparation de fin du plateau
     print("=" * 50)
 
-
 def initAliens(infos: Dict[str, int],
                aliens: List[Dict[str, int]]) -> None:
+    """Procédure initialisant la valeur de la liste de dictionnaires contenant la valeur de chaque alien
+        
+    Args:
+        infos (Dict[str, int]): dictionnaire contenant les informations du plateau de jeu
+        aliens (List[Dict[str, int]]): liste de dictionnaires contenant les informations de chaque alien
     """
-    Fonction initialisant les aliens
-    """
+    
+    assert set(infos.keys()) == {'L', 'H', 'score', 'vie', 'level'}
+    assert type(aliens) == list
+    
     # initialise le nombre d'aliens à 30 au début puis 10 aliens/niveau
-    nbAliens: int = infos["level"] * 10 + 20
+    nbAliens: int = infos["level"] * 15 + 15
     nbAliensParLigne: int = 10
 
     # initialisé à -1 pour ne pas l'initialiser à 1 dans la boucle plus bas
@@ -84,6 +85,7 @@ def initAliens(infos: Dict[str, int],
 
     # création des aliens
     for i in range(nbAliens):
+        
         # 9 % 10 = 9 : garde la position de chaque alien
         posx = i % nbAliensParLigne
         if posx == 0:
@@ -106,7 +108,6 @@ def initAliens(infos: Dict[str, int],
                 "tir": 0,
                 "sens": 0
             })
-
 
 # Algorithme principal
 if __name__ == '__main__':

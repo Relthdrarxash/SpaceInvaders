@@ -1,3 +1,12 @@
+"""! @brief [description du fichier]
+ @file /home/quentin/Documents/Quentin/R107 - Prog/TP/SpaceInvaders/SpaceInvaders1/spaceinvaders.py
+ @section libs Librairies/Modules
+  - [Nom du module] (lien)
+
+ @section authors Author(s)
+  - Créé par [Prénom] [Nom] le [Date] .
+"""
+
 # Modules
 from typing import Dict, List
 from random import randint
@@ -6,9 +15,14 @@ from random import randint
 
 
 def affichageInfos(infos: Dict[str, int]) -> None:
-    """
-    Procédure prenant en paramètre un dictionnaire et affiche
-    de maniere textuelle ses informations
+    """!
+    @brief Procédure prenant en paramètre un dictionnaire et affiche de maniere textuelle ses informations
+
+    Paramètre(s) : 
+        @param infos : Dict[str,int] => [description]
+    Retour de la fonction : 
+        @return None [Description]
+
     """
     print(f'largeur : {infos["L"]} cases,',
           f'hauteur : {infos["H"]} lignes,',
@@ -17,11 +31,17 @@ def affichageInfos(infos: Dict[str, int]) -> None:
           f'level : {infos["level"]}.')
 
 
-def affichagePlateauJeu(infos: Dict[str, int],
-                        aliens: List[Dict[str, int]],
-                        vaisseau: Dict[str, int]) -> None:
-    """
-    Procédure affichant le tableau des scores
+def affichagePlateauJeu(infos: Dict[str, int], aliens: List[Dict[str, int]], vaisseau: Dict[str, int]) -> None:
+    """!
+    @brief Procédure affichant le tableau des scores
+
+    Paramètre(s) : 
+        @param infos : Dict[str,int] => [description]
+        @param aliens : List[Dict[str,int]] => [description]
+        @param vaisseau : Dict[str,int] => [description]
+    Retour de la fonction : 
+        @return None [Description]
+
     """
     # ligne de séparation de début
     print("=" * 50)
@@ -42,9 +62,9 @@ def affichagePlateauJeu(infos: Dict[str, int],
     # (matrice infos["L"] par infos["H"])
     # \033[0;37;40m = coloration du tableau en gris foncé
     tableau: List[List[str]] = [
-        ["\033[0;37;40m " for j in range(plateau_jeu["L"])]
-        for i in range(plateau_jeu["H"])
-    ]
+                                ["\033[0;37;40m " for j in range(plateau_jeu["L"])]
+                                for i in range(plateau_jeu["H"])
+                                ]
 
     # affichage des aliens dans la matrice "tableau" [y][x]
     for i in aliens:
@@ -52,7 +72,7 @@ def affichagePlateauJeu(infos: Dict[str, int],
         # (éviter les conflits lors du retour au début du tableau au changement de ligne)
         # \033[1;32;47m = coloration des aliens en vert sur fond blanc
         tableau[i["posy"]][i["posx"] +
-                           plateau_jeu["L"] // 2 - 5] = "\033[1;32;47m @"
+                           plateau_jeu["L"] // 2 - 5] = "\033[1;32;40m @"
 
     # affichage du vaisseau dans le tableau
     # \033[1;31;40m = coloration du vaisseau en rouge
@@ -67,11 +87,18 @@ def affichagePlateauJeu(infos: Dict[str, int],
     print("=" * 50)
 
 
-def initAliens(infos: Dict[str, int],
-               aliens: List[Dict[str, int]]) -> None:
+def initAliens(infos: Dict[str, int], aliens: List[Dict[str, int]]) -> None:
+    """!
+    @brief Explication de la fonction
+
+    Paramètre(s) : 
+        @param infos : Dict[str,int] => [description]
+        @param aliens : List[Dict[str,int]] => [description]
+    Retour de la fonction : 
+        @return None [Description]
+
     """
-    Fonction initialisant les aliens
-    """
+    
     # initialise le nombre d'aliens à 30 au début puis 10 aliens/niveau
     nbAliens: int = infos["level"] * 10 + 20
     nbAliensParLigne: int = 10
