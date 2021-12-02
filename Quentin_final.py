@@ -114,11 +114,6 @@ def affichagePlateauJeu(infos: Dict[str, int],
                         leVaisseau["tir"] = max(leVaisseau["tir"], infos["tirS"][2])
                     infos["tirS"] = None
                 a_affiche = True
-                # On fait tomber le paquet de l'alien
-                if infos["tirS"] != None :
-                    while infos["tirS"][1] <= infos["H"] - 1 :
-                        infos["tirS"] = (infos["tirS"][0], infos["tirS"][1] + 1, infos["tirS"][2])
-                        sleep(0.01)
                 
             # évolution du niveau de tir du vaisseau
             if not(a_affiche) and y_alien is not None and x == vaisseau["posx"] and y_alien < y and y < infos["H"] - 1:
@@ -424,5 +419,9 @@ if __name__ == '__main__':
                 plateau_jeu["tirS"] = (leVaisseau["posx"], y_atteignable, tirS)
         
         affichagePlateauJeu(plateau_jeu, lesAliens, leVaisseau, y_atteignable)
+
+        #On fait tomber le paquet (Tir Spécial)
+        if  plateau_jeu["tirS"] != None:
+            plateau_jeu["tirS"] = (plateau_jeu["tirS"][0], plateau_jeu["tirS"][1] + 1, plateau_jeu["tirS"][2])
 
         sleep(0.05)
